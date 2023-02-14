@@ -1,14 +1,14 @@
-
+#$1 is the server, $2 is the directory on the server, $3 is the destination directory on the local computer
 #Read the contents from the file into this variable.
 INPUT=$(<220214_filesToCopyFromMLServer.txt) 
 
-#This variable could be deleted.
-STRING_INPUT=($INPUT)
-
-#Generating an array 
+#Generating an array, IFS in the String splitter. 
 IFS=' ' read -a STRING_INPUT <<< "$INPUT"
-for s in "${STRING_INPUT[@]}"; do
-    echo "$s"
-    scp "ubuntu@ec2-3-140-184-211.us-east-2.compute.amazonaws.com:~/workspace/VolumetricCargoSensor/$s" "/Users/oamjadi/projects/scpServerTest"
+
+#For each fileName run the scp command
+for fileName in "${STRING_INPUT[@]}"; do
+    printf "Copying $fileName from the server to local directory $3"
+    printf "\n"
+    scp "$1:$2/$fileName" "$3"
 done
 
